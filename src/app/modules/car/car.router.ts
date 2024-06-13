@@ -1,11 +1,18 @@
-import express from "express";
-const router = express.Router();
+import express from 'express'
+import validateRequest from '../../middlewares/validateRequest'
+import { CarController } from './car.controller'
+import { CarValidations } from './car.validation'
+const router = express.Router()
 
-router.post("/");
-router.get("/:id");
-router.put("/:id");
-router.delete("/:id");
-router.put("/return");
-router.get("/");
+router.post(
+  '/',
+  validateRequest(CarValidations.createCarValidation),
+  CarController.createCar,
+)
+router.get('/:id')
+router.put('/:id')
+router.delete('/:id')
+router.put('/return')
+router.get('/')
 
-export const CarRoutes = router;
+export const CarRoutes = router
