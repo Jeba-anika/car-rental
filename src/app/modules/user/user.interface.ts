@@ -18,3 +18,4 @@ export type TUserSignIn = {
 export interface UserModel extends Model<TUser> {
   isUserExists(email: string): TUser
 }
+export type TUserRole = keyof typeof USER_ROLE

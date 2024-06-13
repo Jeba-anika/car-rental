@@ -6,4 +6,14 @@ const createCar = async (payload: TCar) => {
   return result
 }
 
-export const CarService = { createCar }
+const getAllCars = async () => {
+  const result = await Car.find({})
+  return result
+}
+
+const getSingleCar = async (carId: string) => {
+  const result = await Car.findById(carId)
+  return result
+}
+
+export const CarService = { createCar, getAllCars, getSingleCar }
