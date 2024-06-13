@@ -1,19 +1,20 @@
-import { Model } from "mongoose";
+import { Model, Types } from 'mongoose'
 
 export interface TUser {
-  name: string;
-  email: string;
-  role: "user" | "admin";
-  password: string;
-  phone: string;
-  address: string;
+  _id: Types.ObjectId
+  name: string
+  email: string
+  role: 'user' | 'admin'
+  password: string
+  phone: string
+  address: string
 }
 
 export type TUserSignIn = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 export interface UserModel extends Model<TUser> {
-  isUserExists(email: string): TUser;
+  isUserExists(email: string): TUser
 }

@@ -1,29 +1,37 @@
-import bcrypt from "bcrypt";
-import httpStatus from "http-status";
-import AppError from "../../errors/AppError";
-import { TUser, TUserSignIn } from "./user.interface";
-import { User } from "./user.model";
+import bcrypt from 'bcrypt'
+import httpStatus from 'http-status'
+import jwt from 'jsonwebtoken'
+import config from '../../config'
+import AppError from '../../errors/AppError'
+import { TUser, TUserSignIn } from './user.interface'
+import { User } from './user.model'
 
 const createUser = async (payload: TUser) => {
-  const result = await User.create(payload);
-  return result;
-};
+  const result = await User.create(payload)
+  return result
+}
 
 const userSignIn = async (payload: TUserSignIn) => {
-  const user = await User.isUserExists(payload.email);
+  const user = await User.isUserExists(payload.email)
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User does not exist!");
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist!')
   }
-  console.log(user);
+  console.log(user)
   const isPasswordMatched = await bcrypt.compare(
     payload.password,
-    user?.password
-  );
+    user?.password,
+  )
   if (!isPasswordMatched) {
-    throw new AppError(httpStatus.UNAUTHORIZED, "Password is not correct!");
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Password is not correct!')
   }
 
-  return user;
-};
+  const token = jwt.sign(
+    { role: user.role, id: user._id, email: user.email },
+    config.jwt_secret as string,
+    { expiresIn: config.jwt_access_expires_in },
+  )
 
-export const UserService = { createUser, userSignIn };
+  return { data: user, token }
+}
+
+export const UserService = { createUser, userSignIn }
