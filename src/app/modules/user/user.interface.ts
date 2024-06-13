@@ -15,5 +15,5 @@ export type TUserSignIn = {
 };
 
 export interface UserModel extends Model<TUser> {
-  isUserExists(email: string): boolean;
+  isUserExists(email: string): TUser;
 }
