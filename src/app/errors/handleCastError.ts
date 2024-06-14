@@ -16,7 +16,7 @@ const handleCastError = (
 
   return {
     statusCode,
-    message: '',
+    message: 'Cast Error',
     errorMessages,
   }
 }

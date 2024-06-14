@@ -14,7 +14,7 @@ const handleValidationError = (
   return {
     errorMessages,
     statusCode: 400,
-    message: err.message,
+    message: 'Validation Error',
   }
 }
 

@@ -1,8 +1,9 @@
 import cors from 'cors'
-import express, { Request, Response } from 'express'
+import express, { Application, Request, Response } from 'express'
 import globalErrorHandler from './app/middlewares/globalErrorHandler'
+import { notFoundHandler } from './app/middlewares/notFoundHandler'
 import router from './app/routes'
-const app = express()
+const app: Application = express()
 
 app.use(cors())
 app.use(express.json())
@@ -14,5 +15,6 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use(globalErrorHandler)
+app.use(notFoundHandler)
 
 export default app

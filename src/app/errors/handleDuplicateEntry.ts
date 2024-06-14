@@ -1,7 +1,7 @@
 import { TErrorMessage, TGenericErrorResponse } from '../interface/error'
 
 const handleDuplicateEntry = (err: any): TGenericErrorResponse => {
-  const message = err.message
+  //const message = err.message
   const statusCode = 400
   const errorMessages: TErrorMessage[] = [
     {
@@ -11,7 +11,7 @@ const handleDuplicateEntry = (err: any): TGenericErrorResponse => {
   ]
   return {
     errorMessages,
-    message,
+    message: 'Duplicate Entry',
     statusCode,
   }
 }

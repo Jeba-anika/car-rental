@@ -21,8 +21,8 @@ const sendResponse = <T>(res: Response, data: TResponseData<T>) => {
   } else {
     response = {
       success: data.success,
-      statusCode: data.statusCode,
-      message: data.message,
+      statusCode: data?.data?.length > 0 ? data.statusCode : 404,
+      message: data?.data?.length > 0 ? data.message : 'No Data Found',
       data: data.data,
     }
   }
