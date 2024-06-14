@@ -19,7 +19,7 @@ router.put(
   CarController.updateCar,
 )
 router.delete('/:id', auth('admin'), CarController.deleteCar)
-router.put('/return')
+router.put('/return', validateRequest(CarValidations.returnCarValidation))
 router.get('/', CarController.getAllCars)
 
 export const CarRoutes = router

@@ -21,7 +21,16 @@ const updateCarValidation = z.object({
   pricePerHour: z.number().optional(),
 })
 
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/
+const returnCarValidation = z.object({
+  bookingId: z.string({ required_error: 'Booking id is required!' }),
+  endTime: z.string().refine((time) => timeRegex.test(time), {
+    message: 'Invalid time format. Expected HH:mm.',
+  }),
+})
+
 export const CarValidations = {
   createCarValidation,
   updateCarValidation,
+  returnCarValidation,
 }

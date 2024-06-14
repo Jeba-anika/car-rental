@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose";
-import { TCar } from "./car.interface";
+import { Schema, model } from 'mongoose'
+import { TCar } from './car.interface'
 
 const carSchema = new Schema<TCar>(
   {
@@ -8,8 +8,8 @@ const carSchema = new Schema<TCar>(
     description: { type: String, required: true },
     status: {
       type: String,
-      enum: ["available", "not available"],
-      default: "available",
+      enum: ['available', 'unavailable'],
+      default: 'available',
     },
     features: { type: [String], required: true },
     isElectric: { type: Boolean, required: true },
@@ -18,7 +18,7 @@ const carSchema = new Schema<TCar>(
   },
   {
     timestamps: true,
-  }
-);
+  },
+)
 
-export const Car = model<TCar>("Car", carSchema);
+export const Car = model<TCar>('Car', carSchema)
