@@ -102,6 +102,6 @@ carId: ID of the car for which availability needs to be checked.
 date: The specific date for which availability needs to be checked (format: YYYY-MM-DD).
 Example Request:
 
-- https://car-rental-reservation-system-teal.vercel.app/api/bookings?carId=666c4d92bfb29328ae8ad97b&date=2024-06-16
+- Route: https://car-rental-reservation-system-teal.vercel.app/api/bookings?carId=666c4d92bfb29328ae8ad97b&date=2024-06-16
 
 - Route: https://car-rental-reservation-system-teal.vercel.app/api/bookings/my-bookings (GET)(Only accessible to users)
