@@ -8,7 +8,8 @@ import { User } from './user.model'
 
 const createUser = async (payload: TUser) => {
   const result = await User.create(payload)
-  return result
+  const { password, ...userObject } = result.toObject()
+  return userObject
 }
 
 const userSignIn = async (payload: TUserSignIn) => {
@@ -16,7 +17,6 @@ const userSignIn = async (payload: TUserSignIn) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User does not exist!')
   }
-  console.log(user)
   const isPasswordMatched = await bcrypt.compare(
     payload.password,
     user?.password,
@@ -30,8 +30,9 @@ const userSignIn = async (payload: TUserSignIn) => {
     config.jwt_secret as string,
     { expiresIn: config.jwt_access_expires_in },
   )
+  const { password, ...userData } = user?.toObject()
 
-  return { data: user, token }
+  return { data: userData, token }
 }
 
 export const UserService = { createUser, userSignIn }

@@ -21,6 +21,12 @@ const createBooking = async (payload: TCreateBooking, userId: string) => {
         'The car is not currently available for booking!',
       )
     }
+    if (isCarExists.isDeleted === true) {
+      throw new AppError(
+        httpStatus.SERVICE_UNAVAILABLE,
+        'The car does not exist!',
+      )
+    }
     await Car.findByIdAndUpdate(
       payload.carId,
       { status: 'unavailable' },
