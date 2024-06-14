@@ -1,6 +1,6 @@
-import { Model, Types } from 'mongoose'
+import { Document, Model, Types } from 'mongoose'
 
-export interface TUser {
+export interface TUser extends Document {
   _id: Types.ObjectId
   name: string
   email: string
@@ -16,6 +16,6 @@ export type TUserSignIn = {
 }
 
 export interface UserModel extends Model<TUser> {
-  isUserExists(email: string): TUser
+  isUserExists(email: string): Promise<TUser | null>
 }
 export type TUserRole = keyof typeof USER_ROLE

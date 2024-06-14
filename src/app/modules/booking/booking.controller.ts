@@ -15,7 +15,13 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getAllBookings = catchAsync(async (req: Request, res: Response) => {
-  const result = await BookingService.getAllBookings(req.query)
+  let queryObj = { ...req.query }
+  if (Object.keys(queryObj).includes('carId')) {
+    const { carId, ...remainingQuery } = queryObj
+    queryObj = { ...remainingQuery, car: req.query['carId'] }
+  }
+  const result = await BookingService.getAllBookings(queryObj)
+
   sendResponse(res, {
     data: result,
     message: 'Bookings retrieved successfully',

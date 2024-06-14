@@ -57,7 +57,7 @@ const getAllBookings = async (query: Record<string, unknown>) => {
   const bookingQuery = new QueryBuilder(
     Booking.find().populate('user').populate('car'),
     query,
-  )
+  ).filter()
   const result = await bookingQuery.modelQuery
   return result
 }
