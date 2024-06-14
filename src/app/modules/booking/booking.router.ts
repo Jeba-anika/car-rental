@@ -12,6 +12,6 @@ router.post(
   BookingController.createBooking,
 )
 router.get('/my-bookings', auth('user'), BookingController.getAllBookingsOfUser)
-router.get('/')
+router.get('/', BookingController.getAllBookings)
 
 export const BookingRoutes = router

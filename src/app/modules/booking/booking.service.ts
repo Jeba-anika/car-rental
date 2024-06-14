@@ -1,5 +1,6 @@
 import httpStatus from 'http-status'
 import mongoose from 'mongoose'
+import QueryBuilder from '../../builder/QueryBuilder'
 import AppError from '../../errors/AppError'
 import { Car } from '../car/car.model'
 import { TBooking, TCreateBooking } from './booking.interface'
@@ -46,6 +47,14 @@ const createBooking = async (payload: TCreateBooking, userId: string) => {
   }
 }
 
+const getAllBookings = async (query: Record<string, unknown>) => {
+  const bookingQuery = new QueryBuilder(
+    Booking.find().populate('user').populate('car'),
+    query,
+  )
+  const result = await bookingQuery.modelQuery
+  return result
+}
 const getAllBookingsOfUser = async (userId: string) => {
   const result = await Booking.find({ user: userId })
     .populate('user')
@@ -55,4 +64,5 @@ const getAllBookingsOfUser = async (userId: string) => {
 export const BookingService = {
   createBooking,
   getAllBookingsOfUser,
+  getAllBookings,
 }

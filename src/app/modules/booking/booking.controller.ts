@@ -14,6 +14,15 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const getAllBookings = catchAsync(async (req: Request, res: Response) => {
+  const result = await BookingService.getAllBookings(req.query)
+  sendResponse(res, {
+    data: result,
+    message: 'Bookings retrieved successfully',
+    statusCode: httpStatus.OK,
+    success: true,
+  })
+})
 const getAllBookingsOfUser = catchAsync(async (req: Request, res: Response) => {
   const result = await BookingService.getAllBookingsOfUser(req.user.id)
   sendResponse(res, {
@@ -24,4 +33,8 @@ const getAllBookingsOfUser = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
-export const BookingController = { createBooking, getAllBookingsOfUser }
+export const BookingController = {
+  createBooking,
+  getAllBookingsOfUser,
+  getAllBookings,
+}
