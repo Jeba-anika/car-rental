@@ -16,4 +16,23 @@ const getSingleCar = async (carId: string) => {
   return result
 }
 
-export const CarService = { createCar, getAllCars, getSingleCar }
+const updateCar = async (carId: string, payload: Partial<TCar>) => {
+  const result = await Car.findByIdAndUpdate(carId, payload, { new: true })
+  return result
+}
+const deleteCar = async (carId: string) => {
+  const result = await Car.findByIdAndUpdate(
+    carId,
+    { isDeleted: true },
+    { new: true },
+  )
+  return result
+}
+
+export const CarService = {
+  createCar,
+  getAllCars,
+  getSingleCar,
+  updateCar,
+  deleteCar,
+}

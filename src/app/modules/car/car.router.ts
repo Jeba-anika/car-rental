@@ -12,8 +12,13 @@ router.post(
   CarController.createCar,
 )
 router.get('/:id', CarController.getSingleCar)
-router.put('/:id')
-router.delete('/:id')
+router.put(
+  '/:id',
+  auth('admin'),
+  validateRequest(CarValidations.updateCarValidation),
+  CarController.updateCar,
+)
+router.delete('/:id', auth('admin'), CarController.deleteCar)
 router.put('/return')
 router.get('/', CarController.getAllCars)
 

@@ -1,8 +1,17 @@
-import express from "express";
-const router = express.Router();
+import express from 'express'
+import auth from '../../middlewares/auth'
+import validateRequest from '../../middlewares/validateRequest'
+import { BookingController } from './booking.controller'
+import { BookingValidation } from './booking.validation'
+const router = express.Router()
 
-router.post("/");
-router.get("/my-bookings");
-router.get("/");
+router.post(
+  '/',
+  auth('user'),
+  validateRequest(BookingValidation.createBookingValidation),
+  BookingController.createBooking,
+)
+router.get('/my-bookings', auth('user'), BookingController.getAllBookingsOfUser)
+router.get('/')
 
-export const BookingRoutes = router;
+export const BookingRoutes = router
