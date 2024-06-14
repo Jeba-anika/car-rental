@@ -13,13 +13,19 @@ router.post(
 )
 router.get('/:id', CarController.getSingleCar)
 router.put(
+  '/return',
+  auth('admin'),
+  validateRequest(CarValidations.returnCarValidation),
+  CarController.returnCar,
+)
+router.put(
   '/:id',
   auth('admin'),
   validateRequest(CarValidations.updateCarValidation),
   CarController.updateCar,
 )
 router.delete('/:id', auth('admin'), CarController.deleteCar)
-router.put('/return', validateRequest(CarValidations.returnCarValidation))
+
 router.get('/', CarController.getAllCars)
 
 export const CarRoutes = router

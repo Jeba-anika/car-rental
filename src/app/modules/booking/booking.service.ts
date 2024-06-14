@@ -39,12 +39,11 @@ const createBooking = async (payload: TCreateBooking, userId: string) => {
     await session.commitTransaction()
     await session.endSession()
     return result
-  } catch (err) {
+  } catch (err: any) {
     await session.abortTransaction()
     await session.endSession()
-    throw new Error('Failed to create Booking!')
+    throw new Error(err.message)
   }
-  session.startTransaction()
 }
 
 const getAllBookingsOfUser = async (userId: string) => {
