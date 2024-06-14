@@ -45,7 +45,7 @@ const userSignIn = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Password is not correct!');
     }
     const token = jsonwebtoken_1.default.sign({ role: user.role, id: user._id, email: user.email }, config_1.default.jwt_secret, { expiresIn: config_1.default.jwt_access_expires_in });
-    const _b = user === null || user === void 0 ? void 0 : user.toObject(), { password } = _b, userData = __rest(_b, ["password"]);
+    const _b = user.toObject(), { password } = _b, userData = __rest(_b, ["password"]);
     return { data: userData, token };
 });
 exports.UserService = { createUser, userSignIn };

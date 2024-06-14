@@ -1,4 +1,5 @@
 import { Document, Model, Types } from 'mongoose'
+import { USER_ROLE } from './user.constants'
 
 export interface TUser extends Document {
   _id: Types.ObjectId

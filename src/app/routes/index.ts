@@ -1,23 +1,23 @@
-import { Router } from "express";
-import { BookingRoutes } from "../modules/booking/booking.router";
-import { CarRoutes } from "../modules/car/car.router";
-import { UserRouter } from "../modules/user/user.router";
+import { Router } from 'express'
+import { BookingRoutes } from '../modules/booking/booking.router'
+import { CarRoutes } from '../modules/car/car.router'
+import { UserRouter } from '../modules/user/user.router'
 
-const router = Router();
+const router = Router()
 const moduleRoutes = [
   {
-    path: "/auth",
+    path: '/auth',
     route: UserRouter,
   },
   {
-    path: "/cars",
+    path: '/cars',
     route: CarRoutes,
   },
   {
-    path: "/bookings",
+    path: '/bookings',
     route: BookingRoutes,
   },
-];
+]
 
-moduleRoutes.forEach((route) => router.use(route.path, route.route));
-export default router;
+moduleRoutes.forEach((route) => router.use(route.path, route.route))
+export default router

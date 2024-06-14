@@ -8,7 +8,6 @@ const handleZodError = (err: ZodError): TGenericErrorResponse => {
       message: issue.message,
     }
   })
-  console.log(errorMessages)
   return {
     errorMessages,
     message: 'Validation Error',

@@ -7,15 +7,15 @@ const user_router_1 = require("../modules/user/user.router");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
-        path: "/auth",
+        path: '/auth',
         route: user_router_1.UserRouter,
     },
     {
-        path: "/cars",
+        path: '/cars',
         route: car_router_1.CarRoutes,
     },
     {
-        path: "/bookings",
+        path: '/bookings',
         route: booking_router_1.BookingRoutes,
     },
 ];

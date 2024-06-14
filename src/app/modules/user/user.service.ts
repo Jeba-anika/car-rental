@@ -30,7 +30,7 @@ const userSignIn = async (payload: TUserSignIn) => {
     config.jwt_secret as string,
     { expiresIn: config.jwt_access_expires_in },
   )
-  const { password, ...userData } = user?.toObject()
+  const { password, ...userData } = user.toObject()
 
   return { data: userData, token }
 }

@@ -23,7 +23,9 @@ function main() {
                 console.log(`Car Rental Reservation System app listening on port ${config_1.default.port}`);
             });
         }
-        catch (err) { }
+        catch (err) {
+            console.log(err);
+        }
     });
 }
 main();

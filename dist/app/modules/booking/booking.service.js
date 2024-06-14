@@ -52,7 +52,7 @@ const createBooking = (payload, userId) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 const getAllBookings = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const bookingQuery = new QueryBuilder_1.default(booking_model_1.Booking.find().populate('user').populate('car'), query);
+    const bookingQuery = new QueryBuilder_1.default(booking_model_1.Booking.find().populate('user').populate('car'), query).filter();
     const result = yield bookingQuery.modelQuery;
     return result;
 });

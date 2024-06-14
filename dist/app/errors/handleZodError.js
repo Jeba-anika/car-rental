@@ -7,7 +7,6 @@ const handleZodError = (err) => {
             message: issue.message,
         };
     });
-    console.log(errorMessages);
     return {
         errorMessages,
         message: 'Validation Error',
