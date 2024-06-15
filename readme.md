@@ -1,5 +1,7 @@
 ### A Car rental reservation system backend. Live Link: https://car-rental-reservation-system-teal.vercel.app/
 
+Car rental reservation system backend built using Typescript, Express JS and Mongoose. This app helps a car rental business to keep track of cars and manage customer rentals.
+
 - Technology used:
 
 1. Node JS
