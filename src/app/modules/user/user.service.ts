@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import bcrypt from 'bcrypt'
 import httpStatus from 'http-status'
 import jwt from 'jsonwebtoken'
@@ -5,6 +7,7 @@ import config from '../../config'
 import AppError from '../../errors/AppError'
 import { TUser, TUserSignIn } from './user.interface'
 import { User } from './user.model'
+import { verifyToken } from './user.utils'
 
 const createUser = async (payload: TUser) => {
   const result = await User.create(payload)
@@ -24,15 +27,50 @@ const userSignIn = async (payload: TUserSignIn) => {
   if (!isPasswordMatched) {
     throw new AppError(httpStatus.UNAUTHORIZED, 'Password is not correct!')
   }
-
-  const token = jwt.sign(
-    { role: user.role, id: user._id, email: user.email },
-    config.jwt_secret as string,
-    { expiresIn: config.jwt_access_expires_in },
+  const jwtPayload = { role: user.role, id: user._id, email: user.email }
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: config.jwt_access_expires_in,
+  })
+  const refreshToken = jwt.sign(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    {
+      expiresIn: config.jwt_refresh_expires_in,
+    },
   )
   const { password, ...userData } = user.toObject()
 
-  return { data: userData, token }
+  return { data: userData, accessToken, refreshToken }
 }
 
-export const UserService = { createUser, userSignIn }
+const refreshToken = async (token: string) => {
+  // checking if the given token is valid
+  const decoded = verifyToken(token, config.jwt_refresh_secret as string)
+
+  const { id, iat, email } = decoded
+
+  // checking if the user is exist
+  const user = await User.isUserExists(email)
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist!')
+  }
+
+  // if (
+  //   user.passwordChangedAt &&
+  //   User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
+  // ) {
+  //   throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !')
+  // }
+
+  const jwtPayload = { role: user.role, id: user._id, email: user.email }
+
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: config.jwt_access_expires_in,
+  })
+
+  return {
+    accessToken,
+  }
+}
+
+export const UserService = { createUser, userSignIn, refreshToken }

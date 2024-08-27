@@ -9,7 +9,10 @@ const globalErrorHandler_1 = __importDefault(require("./app/middlewares/globalEr
 const notFoundHandler_1 = require("./app/middlewares/notFoundHandler");
 const routes_1 = __importDefault(require("./app/routes"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: 'http://localhost:5173',
+    credentials: true,
+}));
 app.use(express_1.default.json());
 app.use('/api', routes_1.default);
 app.get('/', (req, res) => {

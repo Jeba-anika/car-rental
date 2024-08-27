@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
+const config_1 = __importDefault(require("../../config"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const user_service_1 = require("./user.service");
@@ -28,15 +29,33 @@ const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const userSignIn = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.UserService.userSignIn(req.body);
+    const { refreshToken } = result;
+    res.cookie('refreshToken', refreshToken, {
+        secure: config_1.default.node_env === 'production',
+        httpOnly: true,
+        sameSite: 'none',
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+    });
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
         message: 'User logged in successfully',
         data: result.data,
-        token: result.token,
+        accessToken: result.accessToken,
+    });
+}));
+const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    const result = yield user_service_1.UserService.refreshToken(refreshToken);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Access token is retrieved succesfully!',
+        data: result,
     });
 }));
 exports.UserController = {
     createUser,
     userSignIn,
+    refreshToken,
 };

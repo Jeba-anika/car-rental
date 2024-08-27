@@ -24,12 +24,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_status_1 = __importDefault(require("http-status"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("./user.model");
+const user_utils_1 = require("./user.utils");
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.User.create(payload);
     const _a = result.toObject(), { password } = _a, userObject = __rest(_a, ["password"]);
@@ -44,8 +47,37 @@ const userSignIn = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!isPasswordMatched) {
         throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Password is not correct!');
     }
-    const token = jsonwebtoken_1.default.sign({ role: user.role, id: user._id, email: user.email }, config_1.default.jwt_secret, { expiresIn: config_1.default.jwt_access_expires_in });
+    const jwtPayload = { role: user.role, id: user._id, email: user.email };
+    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_access_secret, {
+        expiresIn: config_1.default.jwt_access_expires_in,
+    });
+    const refreshToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_refresh_secret, {
+        expiresIn: config_1.default.jwt_refresh_expires_in,
+    });
     const _b = user.toObject(), { password } = _b, userData = __rest(_b, ["password"]);
-    return { data: userData, token };
+    return { data: userData, accessToken, refreshToken };
 });
-exports.UserService = { createUser, userSignIn };
+const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    // checking if the given token is valid
+    const decoded = (0, user_utils_1.verifyToken)(token, config_1.default.jwt_refresh_secret);
+    const { id, iat, email } = decoded;
+    // checking if the user is exist
+    const user = yield user_model_1.User.isUserExists(email);
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User does not exist!');
+    }
+    // if (
+    //   user.passwordChangedAt &&
+    //   User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
+    // ) {
+    //   throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !')
+    // }
+    const jwtPayload = { role: user.role, id: user._id, email: user.email };
+    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_access_secret, {
+        expiresIn: config_1.default.jwt_access_expires_in,
+    });
+    return {
+        accessToken,
+    };
+});
+exports.UserService = { createUser, userSignIn, refreshToken };

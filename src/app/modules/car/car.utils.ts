@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { NextFunction, Request, Response } from 'express'
+import httpStatus from 'http-status'
+import AppError from '../../errors/AppError'
+import catchAsync from '../../utils/catchAsync'
+
 export const calcTotalDuration = (startTime: string, endTime: string) => {
   const startHourAndMin = startTime.split(':')
   const endHourAndMin = endTime.split(':')
@@ -18,3 +24,25 @@ export const calcTotalDuration = (startTime: string, endTime: string) => {
   }
   return timeDiff
 }
+
+export const convertAddCarReq = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (req.files) {
+      const data = JSON.parse(req.body.data)
+      const newData = {
+        ...data,
+        images: (req.files as object[]).map((file: any) => ({
+          altText: file?.filename,
+          url: file?.path,
+        })),
+      }
+      req.body = newData
+      next()
+    } else {
+      throw new AppError(
+        httpStatus.NOT_ACCEPTABLE,
+        'Please upload at least one image',
+      )
+    }
+  },
+)

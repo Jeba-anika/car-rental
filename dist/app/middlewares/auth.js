@@ -25,7 +25,7 @@ const auth = (...requiredRoles) => {
         if (!token) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You have no access to this route');
         }
-        const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_secret);
+        const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
         const { role, id, email } = decoded;
         const user = yield user_model_1.User.isUserExists(email);
         if (!user) {

@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sendResponse = (res, data) => {
     var _a, _b;
     let response = {};
-    if (data.token) {
+    if (data.accessToken) {
         response = {
             success: data.success,
             statusCode: data.statusCode,
             message: data.message,
             data: data.data,
-            token: data.token,
+            accessToken: data.accessToken,
         };
     }
     else {

@@ -5,18 +5,18 @@ type TResponseData<T> = {
   statusCode: number
   message: string
   data: T
-  token?: string
+  accessToken?: string
 }
 
 const sendResponse = <T>(res: Response, data: TResponseData<T>) => {
   let response = {}
-  if (data.token) {
+  if (data.accessToken) {
     response = {
       success: data.success,
       statusCode: data.statusCode,
       message: data.message,
       data: data.data,
-      token: data.token,
+      accessToken: data.accessToken,
     }
   } else {
     response = {

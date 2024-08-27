@@ -1,13 +1,17 @@
 import express from 'express'
 import auth from '../../middlewares/auth'
 import validateRequest from '../../middlewares/validateRequest'
+import { parser } from '../../utils/fileParser'
 import { CarController } from './car.controller'
+import { convertAddCarReq } from './car.utils'
 import { CarValidations } from './car.validation'
 const router = express.Router()
 
 router.post(
   '/',
   auth('admin'),
+  parser.array('images', 10),
+  convertAddCarReq,
   validateRequest(CarValidations.createCarValidation),
   CarController.createCar,
 )
