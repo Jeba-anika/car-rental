@@ -45,6 +45,16 @@ const refreshToken = catchAsync(async (req, res) => {
     data: result,
   })
 })
+const getProfile = catchAsync(async (req, res) => {
+  const result = await UserService.getProfile(req.user)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile fetched Successfully!',
+    data: result,
+  })
+})
 const updateProfile = catchAsync(async (req, res) => {
   const result = await UserService.updateProfile(req.body, req.user)
 
@@ -61,4 +71,5 @@ export const UserController = {
   userSignIn,
   refreshToken,
   updateProfile,
+  getProfile,
 }

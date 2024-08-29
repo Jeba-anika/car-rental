@@ -26,5 +26,6 @@ router.put(
   auth('user', 'admin'),
   UserController.updateProfile,
 )
+router.get('/profile', auth('user', 'admin'), UserController.getProfile)
 
 export const UserRouter = router
