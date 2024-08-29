@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import bcrypt from 'bcrypt'
@@ -73,4 +74,19 @@ const refreshToken = async (token: string) => {
   }
 }
 
-export const UserService = { createUser, userSignIn, refreshToken }
+const updateProfile = async (payload: Partial<TUser>, userInfo: any) => {
+  const user = await User.isUserExists(userInfo.email)
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist!')
+  }
+
+  const result = await User.findByIdAndUpdate(user._id, payload, { new: true })
+  return result
+}
+
+export const UserService = {
+  createUser,
+  userSignIn,
+  refreshToken,
+  updateProfile,
+}

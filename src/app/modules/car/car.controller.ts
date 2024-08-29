@@ -40,6 +40,16 @@ const updateCar = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+
+const getRandomCars = catchAsync(async (req: Request, res: Response) => {
+  const result = await CarService.getRandomCars()
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Cars fetched successfully',
+    data: result,
+  })
+})
 const deleteCar = catchAsync(async (req: Request, res: Response) => {
   const result = await CarService.deleteCar(req.params.id)
   sendResponse(res, {
@@ -63,6 +73,7 @@ export const CarController = {
   createCar,
   getAllCars,
   getSingleCar,
+  getRandomCars,
   updateCar,
   deleteCar,
   returnCar,

@@ -15,6 +15,7 @@ router.post(
   validateRequest(CarValidations.createCarValidation),
   CarController.createCar,
 )
+router.get('/featured', CarController.getRandomCars)
 router.get('/:id', CarController.getSingleCar)
 router.put(
   '/return',
@@ -22,6 +23,7 @@ router.put(
   validateRequest(CarValidations.returnCarValidation),
   CarController.returnCar,
 )
+
 router.put(
   '/:id',
   auth('admin'),

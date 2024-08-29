@@ -53,6 +53,15 @@ const updateCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: result,
     });
 }));
+const getRandomCars = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield car_service_1.CarService.getRandomCars();
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'Cars fetched successfully',
+        data: result,
+    });
+}));
 const deleteCar = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield car_service_1.CarService.deleteCar(req.params.id);
     (0, sendResponse_1.default)(res, {
@@ -75,6 +84,7 @@ exports.CarController = {
     createCar,
     getAllCars,
     getSingleCar,
+    getRandomCars,
     updateCar,
     deleteCar,
     returnCar,

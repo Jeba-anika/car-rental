@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CarService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require("http-status"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
@@ -29,6 +30,13 @@ const getAllCars = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getSingleCar = (carId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield car_model_1.Car.findById(carId);
+    return result;
+});
+const getRandomCars = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield car_model_1.Car.aggregate([
+        { $match: { status: 'available' } },
+        { $sample: { size: 6 } },
+    ]);
     return result;
 });
 const updateCar = (carId, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -52,11 +60,11 @@ const returnCar = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         }, { new: true });
         const time = (0, car_utils_1.calcTotalDuration)(booking.startTime, payload.endTime);
         const price = time * (updatedCar === null || updatedCar === void 0 ? void 0 : updatedCar.pricePerHour);
-        const uodatedBookingData = {
+        const updatedBookingData = {
             endTime: payload.endTime,
             totalCost: price,
         };
-        const updatedBooking = yield booking_model_1.Booking.findByIdAndUpdate(payload.bookingId, uodatedBookingData, { new: true })
+        const updatedBooking = yield booking_model_1.Booking.findByIdAndUpdate(payload.bookingId, updatedBookingData, { new: true })
             .populate('car')
             .populate('user');
         yield session.commitTransaction();
@@ -73,6 +81,7 @@ exports.CarService = {
     createCar,
     getAllCars,
     getSingleCar,
+    getRandomCars,
     updateCar,
     deleteCar,
     returnCar,

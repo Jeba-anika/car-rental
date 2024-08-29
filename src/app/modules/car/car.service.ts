@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status'
 import mongoose from 'mongoose'
 import AppError from '../../errors/AppError'
@@ -18,6 +19,13 @@ const getAllCars = async () => {
 
 const getSingleCar = async (carId: string) => {
   const result = await Car.findById(carId)
+  return result
+}
+const getRandomCars = async () => {
+  const result = await Car.aggregate([
+    { $match: { status: 'available' } },
+    { $sample: { size: 6 } },
+  ])
   return result
 }
 
@@ -53,14 +61,14 @@ const returnCar = async (payload: TReturnCar) => {
 
     const time = calcTotalDuration(booking.startTime, payload.endTime)
     const price = time * (updatedCar?.pricePerHour as number)
-    const uodatedBookingData = {
+    const updatedBookingData = {
       endTime: payload.endTime,
       totalCost: price,
     }
 
     const updatedBooking = await Booking.findByIdAndUpdate(
       payload.bookingId,
-      uodatedBookingData,
+      updatedBookingData,
       { new: true },
     )
       .populate('car')
@@ -81,6 +89,7 @@ export const CarService = {
   createCar,
   getAllCars,
   getSingleCar,
+  getRandomCars,
   updateCar,
   deleteCar,
   returnCar,

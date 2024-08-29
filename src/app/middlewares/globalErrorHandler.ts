@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ErrorRequestHandler } from 'express'
 import { ZodError } from 'zod'
 import config from '../config'
