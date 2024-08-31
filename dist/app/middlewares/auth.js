@@ -20,8 +20,7 @@ const user_model_1 = require("../modules/user/user.model");
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
-        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+        const token = req.headers.authorization;
         if (!token) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You have no access to this route');
         }

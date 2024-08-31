@@ -83,10 +83,36 @@ const updateProfile = async (payload: Partial<TUser>, userInfo: any) => {
   const result = await User.findByIdAndUpdate(user._id, payload, { new: true })
   return result
 }
+const getProfile = async (userInfo: any) => {
+  const user = await User.isUserExists(userInfo.email)
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist!')
+  }
+
+  return user
+}
+const getUsers = async () => {
+  const users = await User.find({})
+
+  return users
+}
+
+const changeStatus = async (user: TUser) => {
+  let status = {}
+  if (user.status === 'active') {
+    status = { status: 'blocked' }
+  } else if (user.status === 'blocked') {
+    status = { status: 'blocked' }
+  }
+  const result = await User.findByIdAndUpdate(user._id, status, { new: true })
+  return result
+}
 
 export const UserService = {
   createUser,
   userSignIn,
   refreshToken,
   updateProfile,
+  getProfile,
+  getUsers,
 }

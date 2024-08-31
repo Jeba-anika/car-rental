@@ -24,6 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -80,4 +81,30 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
         accessToken,
     };
 });
-exports.UserService = { createUser, userSignIn, refreshToken };
+const updateProfile = (payload, userInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.isUserExists(userInfo.email);
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User does not exist!');
+    }
+    const result = yield user_model_1.User.findByIdAndUpdate(user._id, payload, { new: true });
+    return result;
+});
+const getProfile = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.isUserExists(userInfo.email);
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User does not exist!');
+    }
+    return user;
+});
+const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield user_model_1.User.find({});
+    return users;
+});
+exports.UserService = {
+    createUser,
+    userSignIn,
+    refreshToken,
+    updateProfile,
+    getProfile,
+    getUsers,
+};

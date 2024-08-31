@@ -10,6 +10,7 @@ export interface TUser extends Document {
   password: string
   phone?: string
   address?: string
+  status?: 'active' | 'blocked'
 }
 
 export type TUserSignIn = {
