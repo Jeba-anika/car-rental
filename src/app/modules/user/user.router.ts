@@ -28,6 +28,7 @@ router.put(
 )
 router.get('/profile', auth('user', 'admin'), UserController.getProfile)
 router.get('/users', auth('admin'), UserController.getUsers)
-router.get('/user-status-update', auth('admin'), UserController.changeStatus)
+router.put('/user-status-update', auth('admin'), UserController.changeStatus)
+router.put('/make-admin', auth('admin'), UserController.makeAdmin)
 
 export const UserRouter = router

@@ -102,9 +102,21 @@ const changeStatus = async (user: TUser) => {
   if (user.status === 'active') {
     status = { status: 'blocked' }
   } else if (user.status === 'blocked') {
-    status = { status: 'blocked' }
+    status = { status: 'active' }
   }
   const result = await User.findByIdAndUpdate(user._id, status, { new: true })
+  return result
+}
+const makeAdmin = async (userInfo: TUser) => {
+  const user = await User.findById(userInfo._id)
+  if (user?.status === 'blocked') {
+    throw new AppError(httpStatus.BAD_REQUEST, 'The User is blocked!')
+  }
+  const result = await User.findByIdAndUpdate(
+    userInfo._id,
+    { role: 'admin' },
+    { new: true },
+  )
   return result
 }
 
@@ -115,4 +127,6 @@ export const UserService = {
   updateProfile,
   getProfile,
   getUsers,
+  changeStatus,
+  makeAdmin,
 }

@@ -100,6 +100,17 @@ const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user_model_1.User.find({});
     return users;
 });
+const changeStatus = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    let status = {};
+    if (user.status === 'active') {
+        status = { status: 'blocked' };
+    }
+    else if (user.status === 'blocked') {
+        status = { status: 'active' };
+    }
+    const result = yield user_model_1.User.findByIdAndUpdate(user._id, status, { new: true });
+    return result;
+});
 exports.UserService = {
     createUser,
     userSignIn,
@@ -107,4 +118,5 @@ exports.UserService = {
     updateProfile,
     getProfile,
     getUsers,
+    changeStatus,
 };

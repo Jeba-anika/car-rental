@@ -81,6 +81,15 @@ const getUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 
         data: result,
     });
 }));
+const changeStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserService.changeStatus(req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Users status updated Successfully!',
+        data: result,
+    });
+}));
 exports.UserController = {
     createUser,
     userSignIn,
@@ -88,4 +97,5 @@ exports.UserController = {
     updateProfile,
     getProfile,
     getUsers,
+    changeStatus,
 };

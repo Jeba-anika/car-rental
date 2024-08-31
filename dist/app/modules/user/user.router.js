@@ -16,4 +16,5 @@ router.post('/refresh-token', (0, validateRequest_1.default)(user_validation_1.U
 router.put('/update-profile', (0, auth_1.default)('user', 'admin'), user_controller_1.UserController.updateProfile);
 router.get('/profile', (0, auth_1.default)('user', 'admin'), user_controller_1.UserController.getProfile);
 router.get('/users', (0, auth_1.default)('admin'), user_controller_1.UserController.getUsers);
+router.put('/user-status-update', (0, auth_1.default)('admin'), user_controller_1.UserController.changeStatus);
 exports.UserRouter = router;

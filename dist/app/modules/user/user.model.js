@@ -23,6 +23,7 @@ const userSchema = new mongoose_1.Schema({
     address: { type: String },
     phone: { type: String },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    status: { type: String, enum: ['active', 'blocked'], default: 'active' },
 }, {
     timestamps: true,
 });

@@ -86,6 +86,16 @@ const changeStatus = catchAsync(async (req, res) => {
     data: result,
   })
 })
+const makeAdmin = catchAsync(async (req, res) => {
+  const result = await UserService.makeAdmin(req.body)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User role changed to Admin Successfully!',
+    data: result,
+  })
+})
 
 export const UserController = {
   createUser,
@@ -95,4 +105,5 @@ export const UserController = {
   getProfile,
   getUsers,
   changeStatus,
+  makeAdmin,
 }
